@@ -7,7 +7,7 @@ class ProductController extends Product
     {
         return $this->getProductInfo();
     }
-    public function addProduct($name,$description,$price,$date,$image,$category,$group)
+    public function addProduct($name,$description,$version,$price,$date,$image,$category,$group)
     {
         if ($image['error'] == 0)
         {
@@ -18,7 +18,7 @@ class ProductController extends Product
             $fileName = $timeStamp.$fileName;
            if ( move_uploaded_file($tempFile,'../../../uploads/'.$fileName))
            {
-            return $this->createProduct($name,$description,$price,$date,$fileName,$category,$group);
+            return $this->createProduct($name,$description,$version,$price,$date,$fileName,$category,$group);
            }
 
             

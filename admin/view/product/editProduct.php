@@ -28,9 +28,6 @@ if(isset($_POST['submit']))
     if (empty($_POST['name']))
         $nameError = 'Please enter product name';
 
-    if (empty($_POST['description']))
-        $descriptionError = 'Please enter product description';
-
     if (empty($_POST['price']))
         $priceError = 'Please enter product price';
 
@@ -72,6 +69,7 @@ if(isset($_POST['submit']))
         $info = [
             'name' => $_POST['name'],
             'description' => $_POST['description'],
+            'version' => $_POST['version'],
             'price' => $_POST['price'],
             'date' => $_POST['date'],
             'category' => $_POST['category'],
@@ -101,7 +99,7 @@ if(isset($_POST['submit']))
 <main>
     <div class="content">
         <div class="container-fluid">
-            <h2><strong>Add New Product</strong></h2>
+            <h2><strong>Edit Product</strong></h2>
             <form action="" method="post" enctype = "multipart/form-data">
                 <div class = "my-3">
                     <label for="" class="form-label">Product Name</label>
@@ -112,6 +110,12 @@ if(isset($_POST['submit']))
                 <div class = "my-3">
                     <label for="" class="form-label">Description</label>
                     <input type="textarea" name= "description" class="form-control"  value="<?php if (isset($_POST['description'])) echo $_POST['description']; else echo $product['description'];?>">
+                    <?php if (isset($descriptionError) && $errorCondition) echo '<span class="text-danger">'.$descriptionError.'</span>';?>
+                </div>
+
+                <div class = "my-3">
+                    <label for="" class="form-label">Version</label>
+                    <input type="textarea" name= "version" class="form-control"  value="<?php if (isset($_POST['version'])) echo $_POST['version']; else echo $product['version'];?>">
                     <?php if (isset($descriptionError) && $errorCondition) echo '<span class="text-danger">'.$descriptionError.'</span>';?>
                 </div>
 

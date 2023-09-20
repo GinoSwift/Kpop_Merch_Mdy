@@ -1,9 +1,12 @@
 <?php
 
+session_start();
 include_once __DIR__.'/controller/AuthController.php';
 
 
 $auth_controller = new AuthController();
+$auth_controller->forAuthUser();
+
 $userLists = $auth_controller->userLists();
 
 
@@ -13,7 +16,7 @@ if (isset($_POST['submit']))
     {
         if ($_POST['email'] == $userList['email'] && password_verify($_POST['password'],$userList['password']))
         {
-          session_start();
+
           $_SESSION['id'] = $userList['id'];
           $_SESSION['role'] = 'user';
 
@@ -61,8 +64,18 @@ if (isset($_POST['submit']))
         <div class="form_container">
         <i class="uil uil-times form_close"></i>
             <div class="form">
+              
               <form action="#" method="post">
                 <h2>Login</h2>
+
+                <?php
+                  if (isset($_GET['status']) && $_GET['status'])
+                  {
+                    echo '<div class="d-flex justify-content-center align-items-center mt-3">
+                            <span class="text-success">Changed Password Successfully.</span>
+                          </div>';
+                  }
+                ?>
 
                 <div class="input_box">
                   <input type="email" name="email" placeholder="Enter your email" value="<?php if (isset($_POST['email'])) echo $_POST['email'];?>"/>
@@ -78,7 +91,7 @@ if (isset($_POST['submit']))
                 </div>
 
                 <div class="option_field">
-                  <a href="#" class="forgot_pw">Forgot password?</a>
+                  <a href="forgetPassword.php" class="forgot_pw">Forgot password?</a>
                 </div>
 
                 <button class="button" type="submit" name="submit">Login</button>

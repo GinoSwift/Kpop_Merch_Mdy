@@ -9,7 +9,7 @@ class Product
         $con = Database:: connect();
         $con->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
-        $sql = "select product.name as proname,product.id as id,team.name as tname,category.name as cname,product.image as image
+        $sql = "select product.name as proname,product.id as id,team.name as tname,category.name as cname,product.image as image,product.description as description,product.version as version
                 from product join team join category
                 where product.team_id = team.id
                 and product.cat_id = category.id";
@@ -22,16 +22,17 @@ class Product
         return $result;
     }
 
-    public function createProduct($name,$description,$price,$date,$fileName,$category,$group)
+    public function createProduct($name,$description,$version,$price,$date,$fileName,$category,$group)
     {
         $con = Database:: connect();
         $con->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
-        $sql = "insert into product(created_date,name,description,cat_id,team_id,image,price) values (:date,:name,:description,:cat,:team,:image,:price)";
+        $sql = "insert into product(created_date,name,description,version,cat_id,team_id,image,price) values (:date,:name,:description,:version,:cat,:team,:image,:price)";
         $statement = $con->prepare($sql);
 
         $statement->bindParam(':name',$name);
         $statement->bindParam(':description',$description);
+        $statement->bindParam(':version',$version);
         $statement->bindParam(':price',$price);
         $statement->bindParam(':date',$date);
         $statement->bindParam(':image',$fileName);
@@ -73,12 +74,12 @@ class Product
         if (isset($info['fileName']))
         {
             $sql = "update product 
-                    set name=:name ,description=:description,price = :price , created_date=:date,image=:image,cat_id=:cat,team_id = :team 
+                    set name=:name ,description=:description, version=:version ,price = :price , created_date=:date,image=:image,cat_id=:cat,team_id = :team 
                     where id=:id";
         }
         else 
         {
-            $sql = "update product set name=:name ,description=:description,price = :price , created_date=:date,cat_id=:cat,team_id = :team where id=:id";
+            $sql = "update product set name=:name ,description=:description, version=:version,price = :price , created_date=:date,cat_id=:cat,team_id = :team where id=:id";
         }
         
         $statement = $con->prepare($sql);
@@ -86,6 +87,7 @@ class Product
         $statement->bindParam(':id',$id);
         $statement->bindParam(':name',$info['name']);
         $statement->bindParam(':description',$info['description']);
+        $statement->bindParam(':version',$info['version']);
         $statement->bindParam(':price',$info['price']);
         $statement->bindParam(':date',$info['date']);
         $statement->bindParam(':cat',$info['category']);

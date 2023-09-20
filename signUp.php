@@ -3,6 +3,7 @@
 include_once __DIR__.'/controller/AuthController.php';
 
 $auth_controller = new AuthController();
+$auth_controller->forAuthUser();
 $userLists = $auth_controller->userLists();
 
 if (isset($_POST['submit']))
@@ -106,12 +107,14 @@ if (isset($_POST['submit']))
                   <i class="uil uil-envelope-alt email"></i>
                   <?php if (isset($emailError) && $errorCondition)  echo '<span class="errorMsg">'.$emailError.'</span>'; ?>
                 </div>
+                
                 <div class="input_box">
                   <input type="password" name="password" placeholder="Create password"  />
                   <i class="uil uil-lock password"></i>
                   <i class="uil uil-eye-slash pw_hide"></i>
                   <?php if (isset($passwordError) && $errorCondition)  echo '<span class="errorMsg">'.$passwordError.'</span>'; ?>
                 </div>
+
                 <div class="input_box">
                   <input type="password" name="confirm_password" placeholder="Confirm password"  />
                   <i class="uil uil-lock password"></i>

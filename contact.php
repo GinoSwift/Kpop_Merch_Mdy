@@ -1,10 +1,32 @@
 <?php
 include_once 'layouts/user_navbar.php';
-?>
+include_once __DIR__ . '/controller/ContactController.php';
+include_once __DIR__. '/controller/ProductController.php';
 
+$product_cont = new ProductController();
+$products = $product_cont->getLatestProduct();
+
+$contact_cont = new ContactController();
+if (isset($_POST['submit'])) {
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $phone = $_POST['phone'];
+  $message = $_POST['message'];
+  $status = $contact_cont->addMessage($name, $email, $phone, $message);
+  if($status)
+  {
+    echo '<div class="container d-flex justify-content-center">
+              <div class=" alert alert-info w-50">
+                  <p class="mb-0 text-center">Your message is successfully uploaded!!</p>
+              </div>
+    </div>';
+  }
+}
+?>
 <!-- contact section -->
 
-<section class="contact_section layout_padding">
+
+<section class="contact_section ">
   <div class="container px-0">
     <div class="heading_container ">
       <h2 class="">
@@ -22,21 +44,21 @@ include_once 'layouts/user_navbar.php';
         </div>
       </div>
       <div class="col-md-6 col-lg-5 px-0">
-        <form action="#">
+        <form action="#" method="post">
           <div>
-            <input type="text" placeholder="Name" />
+            <input type="text" name="name" placeholder="Name" />
           </div>
           <div>
-            <input type="email" placeholder="Email" />
+            <input type="email" name="email" placeholder="Email" />
           </div>
           <div>
-            <input type="text" placeholder="Phone" />
+            <input type="text" name="phone" placeholder="Phone" />
           </div>
           <div>
-            <input type="text" class="message-box" placeholder="Message" />
+            <input type="text" name="message" class="message-box" placeholder="Message" />
           </div>
           <div class="d-flex ">
-            <button>
+            <button name="submit">
               SEND
             </button>
           </div>

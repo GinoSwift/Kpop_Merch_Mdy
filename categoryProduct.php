@@ -1,6 +1,5 @@
 <?php
-// session_start();
-// Start output buffering
+
 include_once __DIR__ . '/layouts/user_navbar.php';
 include_once __DIR__ . '/controller/ProductController.php';
 include_once __DIR__ . '/controller/CartController.php';
@@ -10,7 +9,8 @@ $id = $_GET['id'];
 $pro_con = new ProductController();
 $products = $pro_con->categoryProducts($id);
 
-
+if(isset($_SESSION['id']))
+{
 
 $userId = $_SESSION['id'];
 
@@ -21,6 +21,8 @@ if (!empty($carts)) {
   foreach ($carts as $cart) {
     $cartLists[] = $cart['product_id'];
   }
+}
+
 }
 
 

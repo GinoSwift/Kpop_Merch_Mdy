@@ -96,7 +96,7 @@ $admins = $auth_controller->adminList();
             </div>
 
             <div class="d-flex justify-content-center">
-                <input type="submit" name="submit" value="LogIn" class="btn btn-primary w-100">
+                <input type="submit" name="submit" value="LogIn" class="btn btn-danger w-100">
             </div>
 
             <div class="pass-txt d-flex justify-content-center mt-2">
@@ -107,7 +107,7 @@ $admins = $auth_controller->adminList();
 
 
             <div class="d-flex justify-content-center mt-3">
-                <a href="register.php" class="btn btn-success w-75">Create new account</a>
+                <a href="register.php" class="btn btn-warning w-75">Create new account</a>
             </div>
         </form>
     </div>

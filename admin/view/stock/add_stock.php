@@ -14,36 +14,40 @@ $rep_con = new StockController();
         $html.= "<table class = 'table table-striped'><tr><th>Product Name</th><th>Total Stock In</th><th> Total Stock Out</th></tr>";
         $html.="</div><div class='card-body'>";      
 
-        foreach($result as $report)
-        {
+       
         foreach($products as $product)
         {
-            if($report['product_id'] == $product['id'])
+            $html .= "<tr><td>".$product['proname']."</td>";
+            
+            $process = false; 
+            foreach($result as $report)
             {
-                $html .= "<tr><td>".$product['proname']."</td>"; 
+                if($report['product_id'] == $product['id'])
+                {
+                   
+                    $html .= "<td>".$report['stock_in']."</td>";
+                    $process = true;
+                }
             }
-        }
-        $html .= "<td>".$report['stock_in']."</td>";
-
-        $stock = 0;
+            if(!$process)
+            {
+                $html .= "<td>0</td>";
+            }
+       
+        $temp = false;
         foreach($orders as $order)
         {
-            if($report['product_id'] == $order['product_id'])
-            {
-                if(isset($order))
-                {
-                    $html .= "<td>". $stock = $order['stock_out'] ."</td></tr>"; 
-                }
-                else{
-                    $html .= "<td>0</td></tr>";
-                }
-                
+            if($product['id'] == $order['product_id'])
+            {   
+                    $html .= "<td>". $stock = $order['stock_out'] ."</td>"; 
+                    $temp = true;   
             }
-            // else{
-            //     $html .= "<td>".$stock."</td>";
-            // }
         }
-       
+        if(!$temp)
+        {
+            $html .= "<td>0</td>";
+        }
+       $html .= "</tr>";
         }
         $html .= "</table></div></div></div></div>";
         echo $html;

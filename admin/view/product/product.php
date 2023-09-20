@@ -50,6 +50,8 @@ $products = $pro_con->getProducts();
                             <th>Image</th>
                             <th>Category Name</th>
                             <th>Team Name</th>
+                            <th>Description</th>
+                            <th>Version</th>
                             <th>Action</th>
                         </thead>
                         <tbody>
@@ -62,9 +64,11 @@ $products = $pro_con->getProducts();
                                 echo "<td><img src = '../../../uploads/" . $product['image'] . "' width = '100px' height = '100px' ></td>";
                                 echo "<td>" . $product['cname'] . "</td>";
                                 echo "<td>" . $product['tname'] . "</td>";
+                                echo "<td>" . $product['description'] . "</td>";
+                                echo "<td>" . $product['version'] . "</td>";
                                 echo "<td id='" . $product['id'] . "'>
-                                <a class= 'btn btn-warning mx-3' href='editProduct.php?id=" . $product['id'] . "'>Edit</a>
-                                <button class = 'btn btn-danger mx-3 product_delete'>Delete</button>
+                                <a class= 'btn btn-warning mx-1' href='editProduct.php?id=" . $product['id'] . "'>Edit</a>
+                                <button class = 'btn btn-danger mx-1 product_delete'>Delete</button>
                             </td>";
                                 echo "</tr>";
                             }

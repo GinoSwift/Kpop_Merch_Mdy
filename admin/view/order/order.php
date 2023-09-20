@@ -5,7 +5,7 @@ include_once __DIR__ . '/../../controller/OrderController.php';
 
 $order_cont = new OrderController();
 $orders = $order_cont->getOrders();
-
+// die(var_dump($orders));
 
 
 ?>
@@ -21,7 +21,7 @@ $orders = $order_cont->getOrders();
                         <tr>
                             <th>No</th>
                             <th>Name</th>
-                            <th>Order Code</th>
+                            <th>Voucher Code</th>
                             <th>Date</th>
                             <th>Details</th>
                             <th>Actions</th>
@@ -34,13 +34,13 @@ $orders = $order_cont->getOrders();
                             <tr>
                                 <th><?= $count++ ?></th>
                                 <th><?= $order['name'] ?></th>
-                                <th><?= $order['code'] ?></th>
+                                <th><?= $order['voucher_code'] ?></th>
                                 <th><?= $order['date'] ?></th>
                                 <th><a href='invoice.php?code=<?= $order['code']; ?>' class="btn btn-info">View Details</a></th>
-                                <th>
+                                <th id="<?php echo $order['code']; ?>">
                                     <?php if ($order['status'] == 'pending') : ?>
-                                        <button class='btn btn-success mx-3'>Accept</button>
-                                        <button class='btn btn-danger mx-3'>Decline</button>
+                                        <button class='btn btn-success btn_accept mx-3'>Accept</button>
+                                        <button class='btn btn-danger btn_decline mx-3'>Decline</button>
 
                                     <?php elseif ($order['status'] == 'accept') : ?>
                                         <span class="text-success">Already accepted</span>

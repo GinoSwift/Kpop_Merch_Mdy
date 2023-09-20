@@ -8,9 +8,9 @@ class CodeController extends Code {
         return $this->getCodeList();
     }
 
-    public function addCode($code)
+    public function addCode($code,$agent)
     {
-        return $this->createCode($code);
+        return $this->createCode($code,$agent);
     }
 
     public function deleteCode($id)

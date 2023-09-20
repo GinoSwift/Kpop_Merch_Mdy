@@ -11,6 +11,7 @@
 $code_controller = new CodeController();
 $codes = $code_controller->codeList();
 
+
 ?>
 
             <main class="content">
@@ -33,14 +34,15 @@ $codes = $code_controller->codeList();
                     
                     <div class='row mt-3'>
                         <div class='col-md-12'>
-                            <table class="table" id="catTable">
+                            <table class="table" id="mytable">
                                 <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Code</th>
                                     <th>Status</th>
+                                    <th>Agent</th>
                                     <th>Used at</th>
-
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -60,12 +62,17 @@ $codes = $code_controller->codeList();
                                                 <?php endif; ?>
                                             </td>
 
+                                            <td><?php echo $code['agent_name']?></td>
                                             <td>
                                                 <?php if ($code['used_at'] == null) :?>
                                                     <span class="text-success">-</span>
                                                 <?php else : ?>
                                                     <span class="text-dark"><?php echo $code['used_at'] ?></span>
                                                 <?php endif; ?>
+                                            </td>
+
+                                            <td id="<?php echo $code['id'];?>">
+                                                <button class = 'btn btn-danger mx-3 voucher_code_delete'>Delete</button>
                                             </td>
                                             
                                         </tr>

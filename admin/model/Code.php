@@ -9,7 +9,9 @@ class Code {
         $con->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
         //2.write sql
-        $sql = "select * from voucher_code";
+        $sql = "select voucher_code.* , agent.name as agent_name 
+            from voucher_code
+            join agent on voucher_code.agent_id = agent.id";
         $statement=$con->prepare($sql);
         
         //3.sql execute
@@ -22,16 +24,17 @@ class Code {
         return $result;
     }
 
-    public function createCode($code)
+    public function createCode($code,$agent)
     {
         //1. db connection
         $con=Database::connect();
         $con->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
         //2.write sql
-        $sql = "insert into voucher_code (code) values (:code)";
+        $sql = "insert into voucher_code (code,agent_id) values (:code,:agent)";
         $statement=$con->prepare($sql);
         $statement->bindParam(':code',$code);
+        $statement->bindParam(':agent',$agent);
         
         //3.sql execute
         if($statement->execute())

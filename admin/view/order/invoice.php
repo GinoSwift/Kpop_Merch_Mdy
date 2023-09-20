@@ -73,7 +73,7 @@ $orders = $order_cont->getOrder($code);
                     <tfoot>
                         <tr>
                             <td colspan="4" class="text-right"><strong>Total Price:</strong></td>
-                            <td colspan="1"><strong>$ <?= $total ?></strong></td>
+                            <td colspan="1"><strong><?= $total ?></strong></td>
                         </tr>
                     </tfoot>
                 </table>

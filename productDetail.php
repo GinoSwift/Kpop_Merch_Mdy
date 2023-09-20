@@ -5,20 +5,24 @@ include_once __DIR__ . '/controller/ProductController.php';
 include_once __DIR__ . '/controller/CartController.php';
 
 $productId = $_GET['productId'];
-$userId = $_SESSION['id'];
-
 $product_cont = new ProductController();
 $product = $product_cont->productDetail($productId);
 
-$cart_controller = new CartController();
-$carts = $cart_controller->getCart($userId);
+if(isset($_SESSION['id'])){
 
-
-if (!empty($carts)) {
-    foreach ($carts as $cart) {
-        $cartLists[] = $cart['product_id'];
+    $userId = $_SESSION['id'];
+    
+    $cart_controller = new CartController();
+    $carts = $cart_controller->getCart($userId);
+    
+    
+    if (!empty($carts)) {
+        foreach ($carts as $cart) {
+            $cartLists[] = $cart['product_id'];
+        }
     }
 }
+
 
 
 ?>
@@ -48,28 +52,28 @@ if (!empty($carts)) {
                                 </div>
                                 <div class="col-md">
                                     <div class="input-group">
-                                        <button type="button" class="btn btn-primary btn-decrease">-</button>
+                                        <button type="button" class="btn btn-warning btn-decrease">-</button>
                                         <input type="number" id="qty" class="form-control text-center" name="qty" value="1">
-                                        <button type="button" class="btn btn-primary btn-increase">+</button>
+                                        <button type="button" class="btn btn-warning btn-increase">+</button>
                                     </div>
                                 </div>
 
                                 <?php if (isset($cartLists) && in_array($productId, $cartLists)) : ?>
 
                                     <div class="col-auto mt-2 mt-md-0">
-                                        <span class="btn btn-success">Already added</span>
+                                        <span class="btn btn-danger">Already added</span>
                                     </div>
                                 <?php elseif (isset($_SESSION['id']) && $_SESSION['role'] == 'user') : ?>
 
                                     <div class="col-auto mt-2 mt-md-0" id="<?php echo $productId ?>">
-                                        <input type="submit" class="btn btn-success add_cart" name="submit" value="Add to Cart">
+                                        <input type="submit" class="btn btn-danger add_cart" name="submit" value="Add to Cart">
                                     </div>
 
                                 <?php else : ?>
 
                                     <div class="col-auto mt-2 mt-md-0" id="<?php echo $productId ?>">
                                         <a href="logIn.php">
-                                            <input type="submit" class="btn btn-success" name="submit" value="Add to Cart">
+                                            <input type="submit" class="btn btn-danger" name="submit" value="Add to Cart">
                                         </a>
                                     </div>
 

@@ -22,6 +22,7 @@ class City
 
         return $result;
     }
+    
     public function createCity($name)
     {
         //db connect 

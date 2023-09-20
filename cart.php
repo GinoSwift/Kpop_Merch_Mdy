@@ -1,17 +1,32 @@
 <?php
-
-include_once __DIR__ . '/layouts/user_navbar.php';
-include_once __DIR__ . '/controller/CartController.php';
-
-$id = $_SESSION['id'];
-
-$cart_controller = new CartController();
-$carts = $cart_controller->cartDetail($id);
+include_once __DIR__.'/controller/AuthController.php';
 
 
-$total = 0;
-foreach ($carts as $cart) {
-    $total += ($cart['qty'] * $cart['product_price']);
+include_once __DIR__ . '/layouts/user_navbar.php'; 
+include_once __DIR__ . '/controller/CartController.php'; 
+include_once __DIR__.'/controller/CityController.php'; 
+include_once __DIR__.'/controller/TownshipController.php'; 
+
+
+$auth_controller = new AuthController();
+$auth_controller->checkAuth();
+ 
+$id = $_SESSION['id']; 
+ 
+$cart_controller = new CartController(); 
+$city_controller = new CityController(); 
+$township_controller = new TownshipController(); 
+ 
+$cities = $city_controller->cityList(); 
+ 
+$townships = $township_controller->townshipList(); 
+ 
+$carts = $cart_controller->cartDetail($id); 
+ 
+ 
+$total = 0; 
+foreach ($carts as $cart) { 
+    $total += ($cart['qty'] * $cart['product_price']); 
 }
 
 
@@ -94,28 +109,46 @@ foreach ($carts as $cart) {
 
         <div class="col-md-4 offset-1">
             <h2 class="section-title text-center bg-dark text-white text-uppercase mb-3"><span class="pr-3">Cart Summary</span></h2>
-
+            <div class="mb-3"> 
+                <h5 class="bg-dark text-white text-center">Township For Delivery</h5> 
+                <select name="township" id="township"> 
+                    <option value="" selected disabled>Select Your Township</option> 
+                    <?php foreach($townships as $township) 
+                    { 
+                    ?> 
+                    <option value="<?php echo $township['id'] ?>"> 
+                    <?php echo $township['name'] ?> 
+                    </option> 
+                    <?php  
+                    } 
+                    ?> 
+                </select> 
+            </div>
             <div class="bg-light p-30 my-3">
                 <div class="border-bottom pb-2">
                     <div class="d-flex justify-content-between mb-3 p-2">
                         <h6>Subtotal</h6>
-                        <h6 id="subTotal"><?php echo $total; ?></h6>
+                        <h6 id="subTotal"><?php echo $total; ?> Kyats</h6>
                     </div>
                     <div class="d-flex justify-content-between p-2">
-                        <h6 class="font-weight-medium">Shipping</h6>
-                        <h6 class="font-weight-medium">$10</h6>
+                        <h6 class="font-weight-medium">Tax</h6>
+                        <h6 class="font-weight-medium">500 Kyats</h6>
                     </div>
                 </div>
                 <div class="pt-2">
                     <div class="d-flex justify-content-between mt-2 p-2">
                         <h5>Total</h5>
-                        <h5 id="total"><?php echo ($total + 10); ?></h5>
+                        <h5 id="total"><?php echo ($total + 500); ?> Kyats</h5>
                     </div>
                     <div class="d-flex justify-content-between mt-2 p-2">
                         <h5>Voucher Code</h5>
                         <input type="text" name="code" id="voucher_code" value="">
                     </div>
-                    <button name="checkOut" id="orderBtn" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
+                    <div class="mt-2 d-flex justify-content-center align-items-center">
+                        <span class="text-secondary me-2">Do not have any code? </span>
+                        <a href="agentList.php" style="text-decoration:none">Buy here.</a>
+                    </div>
+                    <button name="checkOut" id="orderBtn" class="btn btn-block btn-danger font-weight-bold mt-3 py-3">Proceed To Checkout</button>
                 </div>
             </div>
         </div>

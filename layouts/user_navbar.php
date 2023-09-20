@@ -13,6 +13,13 @@ if (isset($_SESSION['id'])) {
 $cart_controller = new CategoryController();
 $categories = $cart_controller->allCategories();
 
+if (isset($_POST['team'])) {
+    $_SESSION['team'] = $_POST['team'];
+
+    // Redirect to the target page
+    header('Location: SearchDisplay.php');
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +47,9 @@ $categories = $cart_controller->allCategories();
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="public/css/bootstrap.css" />
 
+    <!-- fontawesome  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <!-- Custom styles for this template -->
     <link href="public/css/style.css" rel="stylesheet" />
@@ -50,6 +60,15 @@ $categories = $cart_controller->allCategories();
 
     <!-- cart css -->
     <link rel="stylesheet" href="public/css/cart.css">
+
+    <!-- review css -->
+    <link rel="stylesheet" href="public/css/review.css">
+
+    <!-- bootstrap link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- datable cdn link -->
+    <link href="https://cdn.datatables.net/v/dt/dt-1.13.5/b-2.4.1/datatables.min.css" rel="stylesheet" />
 
     <!-- css animation -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -121,14 +140,16 @@ $categories = $cart_controller->allCategories();
                                         <span>
                                             <?php
                                             echo $userData['name'];
+
                                             ?>
+
                                         </span>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="categoriesDropdown">
 
-                                        <a class="dropdown-item" href="profile.php">Profile</a>
+                                        <a class="dropdown-item" href="agentList.php">Agent List</a>
 
-                                        <a class="dropdown-item" href="#">Change Password</a>
+                                        <a class="dropdown-item" href="changePassword.php">Change Password</a>
 
                                         <a class="dropdown-item" href="logOut.php">Log Out</a>
 
@@ -138,7 +159,7 @@ $categories = $cart_controller->allCategories();
                         <?php
                         } else {
                         ?>
-                            <a href="logIn.php">
+                            <a href="logIn.php" style="text-decoration:none">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span>
                                     Login
@@ -151,8 +172,26 @@ $categories = $cart_controller->allCategories();
                                     else echo 'logIn.php'; ?>">
                             <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                         </a>
+                        <button class="btn nav_search-btn" type="button" id="toggleSearchBar">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                        <form class="form-inline" method="POST" id="searchForm" style="display: none;">
+                            <input type="text" name="team" style="width: 7rem">
+                            <button type="submit" class="btn btn-primary" style="width: 4rem; height: 2rem; font-size: 0.8rem; padding: 0.5rem;">Search</button>
+                        </form>
                     </div>
                 </div>
             </nav>
         </header>
         <!-- end header section -->
+        <script>
+            document.getElementById('toggleSearchBar').addEventListener('click', function() {
+                var searchBar = document.getElementById('searchForm');
+
+                if (searchBar.style.display === 'none') {
+                    searchBar.style.display = 'inline';
+                } else {
+                    searchBar.style.display = 'none';
+                }
+            });
+        </script>

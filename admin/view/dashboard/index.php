@@ -8,6 +8,8 @@ include_once __DIR__ . '/../../controller/UserController.php';
 $order_con = new OrderController();
 $orders = $order_con->getOrders();
 $orderPerMonth = $order_con->orderPerMonth();
+$profits = $order_con->profit();
+// die(var_dump($profits));
 
 $cat_con = new CategoryController();
 $categories = $cat_con->getCategories();
@@ -120,7 +122,7 @@ $users = $user_con->getUser();
 			</div>
 
 			<div class="row">
-				<div class="col-xl-6 col-xxl-5 d-flex order-2 order-xxl-3">
+				<div class="col-xl-12 col-xxl-12 d-flex order-12 order-xxl-12">
 					<div class="card flex-fill w-100">
 						<div class="card-header">
 
@@ -155,6 +157,8 @@ $users = $user_con->getUser();
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="row">
 				<div class="col-6 col-lg-6 col-xxl-6 d-flex">
 					<div class="card flex-fill">
 						<div class="card-header">
@@ -177,6 +181,35 @@ $users = $user_con->getUser();
 									echo "<td>" . $count++ . "</td>";
 									echo "<td>" . date("F", mktime(0, 0, 0, $opm['month'], 1)) . "</td>";
 									echo "<td>" . $opm['total'] . "</td>";
+									echo "</tr>";
+								}
+								?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="col-6 col-lg-6 col-xxl-6 d-flex">
+					<div class="card flex-fill">
+						<div class="card-header">
+
+							<h5 class="card-title mb-0">Profit Information</h5>
+						</div>
+						<table class="table table-hover my-0">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th class="d-none d-xl-table-cell">Month</th>
+									<th class="d-none d-xl-table-cell">Total profits</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+								$count = 1;
+								foreach ($profits as $pro) {
+									echo "<tr>";
+									echo "<td>" . $count++ . "</td>";
+									echo "<td>" . date("F", mktime(0, 0, 0, $pro['month'], 1)) . "</td>";
+									echo "<td>" . $pro['total'] . "</td>";
 									echo "</tr>";
 								}
 								?>

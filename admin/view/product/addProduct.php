@@ -19,12 +19,10 @@ $groups = $gp_con->getGroup();
 
 if (isset($_POST['submit'])) {
     $image = $_FILES['image'];
-    die(var_dump($image));
+    
     if (empty($_POST['name']))
         $nameError = 'Please enter product name';
 
-    if (empty($_POST['description']))
-        $descriptionError = 'Please enter product description';
 
     if (empty($_POST['price']))
         $priceError = 'Please enter product price';
@@ -65,12 +63,13 @@ if (isset($_POST['submit'])) {
     } else {
         $name = $_POST['name'];
         $description = $_POST['description'];
+        $version = $_POST['version'];
         $price = $_POST['price'];
         $date = $_POST['date'];
         $category = $_POST['category'];
         $group = $_POST['group'];
 
-        $addStatus = $pro_con->addProduct($name, $description, $price, $date, $image, $category, $group);
+        $addStatus = $pro_con->addProduct($name, $description, $version,$price, $date, $image, $category, $group);
 
         if ($addStatus) {
             echo "<script>location.href = 'product.php?addStatus=" . $addStatus . "'</script>";
@@ -94,8 +93,14 @@ if (isset($_POST['submit'])) {
 
                 <div class="my-3">
                     <label for="" class="form-label">Description</label>
-                    <input type="textarea" name="description" value="<?php if (isset($_POST['description']))  echo $_POST['description']; ?>" class="form-control">
+                    <textarea name="description"  value="<?php if (isset($_POST['description']))  echo $_POST['description']; ?>" class="form-control"></textarea>
                     <?php if (isset($descriptionError) && $errorCondition) echo '<span class="text-danger">' . $descriptionError . '</span>'; ?>
+                </div>
+
+                <div class = "my-3">
+                    <label for="" class="form-label">Version</label>
+                    <textarea name= "version"  class="form-control"  value="<?php if (isset($_POST['version'])) echo $_POST['version']; else echo $product['version'];?>"></textarea>
+                    <?php if (isset($descriptionError) && $errorCondition) echo '<span class="text-danger">'.$descriptionError.'</span>';?>
                 </div>
 
                 <div class="my-3">

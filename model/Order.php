@@ -4,13 +4,14 @@ include_once __DIR__.'/../vendor/db/database.php';
 
 class Order 
 {
-    public function createOrder($userId,$order,$orderCode)
+    public function createOrder($userId,$order,$orderCode,$vcCode)
     {
+        // die(var_dump($vcCode));
         $conn = Database::connect();
 
         $sql = 'insert into orders
-                (user_id,product_id,quantity,total_price,order_code)
-                values (:user_id,:product_id,:quantity,:total_price,:order_code)';
+                (user_id,product_id,quantity,total_price,order_code,voucher_code)
+                values (:user_id,:product_id,:quantity,:total_price,:order_code,:vc_code)';
 
         $statement = $conn->prepare($sql);
 
@@ -20,6 +21,7 @@ class Order
         $statement->bindParam(':quantity',$order['quantity']);
         $statement->bindParam(':total_price',$order['total_price']);
         $statement->bindParam(':order_code',$orderCode);
+        $statement->bindParam(':vc_code',$vcCode);
 
 
         if ($statement->execute())
@@ -28,20 +30,21 @@ class Order
         }
     }
 
-    public function createOrderDetail($userId,$orderCode)
+    public function createOrderDetail($userId,$orderCode,$townshipId,$vcCode)
     {
         
         $conn = Database::connect();
 
         $sql = 'insert into order_detail
-                (user_id,order_code)
-                values (:user_id,:order_code)';
+                (user_id,order_code,township_id,voucher_code)
+                values (:user_id,:order_code,:township_id,:vc_code)';
 
         $statement = $conn->prepare($sql);
 
         $statement->bindParam(':user_id',$userId);
         $statement->bindParam(':order_code',$orderCode);
-
+        $statement->bindParam(':township_id',$townshipId);
+        $statement->bindParam(':vc_code',$vcCode);
 
 
         if ($statement->execute())

@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include_once __DIR__.'/controller/OrderController.php';
 include_once __DIR__.'/controller/CartController.php';
 include_once __DIR__.'/controller/CodeController.php';
@@ -7,6 +8,9 @@ include_once __DIR__.'/controller/CodeController.php';
 $userId = $_SESSION['id'];
 $orders = $_POST['data'];
 $vcCode = $_POST['vcCode'];
+// die(var_dump($vcCode));
+$townshipId = $_POST['townshipId'];
+
 
 $code_controller = new CodeController();
 $order_controller = new OrderController();
@@ -17,15 +21,22 @@ $voucherCodes = $code_controller->codes();
 
 if (!empty($voucherCodes))
 {
+    $usedCodeList = [];
+    $freeCodeList = [];
+
+    $u = 0;
+    $f = 0;
   foreach ($voucherCodes as $voucherCode )
   {
     if ($voucherCode['used_by_user'] != null)
     {
-        $usedCodeList[] += $voucherCode['code'];
+        $usedCodeList[$u] = $voucherCode['code'];
+        $u++;
     }
     else 
     {
-        $freeCodeList[] += $voucherCode['code'];
+        $freeCodeList[$f] = $voucherCode['code'];
+        $f++;
     }
   }
 }
@@ -39,18 +50,17 @@ else
    
     if (in_array($vcCode,$freeCodeList))
     {
-        
-        $date = date('Y-m-d');
-
-        $usedVcCode = $code_controller->editVcCode($userId,$vcCode,$date);
 
         $orderCodes = $order_controller->orderCode();
 
+        $orderCodeList = [];
+        $oc = 0;
         if (!empty($orderCodes))
         {
           foreach ($orderCodes as $orderCode )
           {
-            $orderCodeList[] += $orderCode['order_code'];
+            $orderCodeList[$oc] = $orderCode['order_code'];
+            $oc++;
           }
         }
 
@@ -70,34 +80,37 @@ else
 
         foreach ($orders as $order)
         {
-   
 
-            $addOrderStatus = $order_controller->addOrder($userId,$order,$orderCode);
+            $addOrderStatus = $order_controller->addOrder($userId,$order,$orderCode,$vcCode);
 
-            if ($addOrderStatus)
+        }
+
+        if ($addOrderStatus)
+        {
+            $addOrderDetail = $order_controller->addOrderDetail($userId,$orderCode,$townshipId,$vcCode);
+
+            if ($addOrderDetail)
             {
-                $addOrderDetail = $order_controller->addOrderDetail($userId,$orderCode);
+                $date = date('Y-m-d');
 
-                if ($addOrderDetail)
+                $usedVcCode = $code_controller->editVcCode($userId,$vcCode,$date);
+
+                foreach ($orders as $order)
                 {
-                    foreach ($orders as $order)
-                    {
-                        $removeCart = $cart_controller->removeCart($order['product_id']);
-                    }
+                    $removeCart = $cart_controller->removeCart($order['product_id']);
                 }
             }
-
         }
 
 
 
         if ($removeCart)
         {
-            echo 'Your Order is success';
+            echo 'Your Order is success and wait for the confirmation email from our shop.';
         }
         else 
         {
-            echo 'Something went wrong';
+            echo 'Something went wrong with your order';
         }
     }
     else 
